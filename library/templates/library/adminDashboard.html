@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Library Admin
+{% endblock title %}
+
+{% block style %}
+  <link rel="stylesheet" href="{% static 'library/css/style.css' %}">
+{% endblock style %}
+{% block content %}
+   {% include "library/navbarAdmin.html" %}
+   
+   {% if request.user.is_authenticated %}
+   <div class="text-start fs-5 ms-3 mt-5">Welcome <span class="text-uppercase">{{ user.fullName }}</span></div>
+   {% endif %}
+     
+<div class="card-group">
+   <!-- Card for Showing Book Stats -->
+    <div class="card">
+      <div class="card-body text-center">
+        <!-- <i class="bi bi-book"></i> -->
+        <img class="svg" src="{% static 'library/svgs/book.svg' %}" alt="">
+        <p class="card-text fs-4">8</p>
+        <a href="#" class="btn btn-dark">View Books </a>
+      </div>
+    </div>  
+
+      <!-- For Student Stat -->
+      <div class="card">
+        <!-- <img src="..." class="card-img-top" alt="..."> -->
+    
+        <div class="card-body text-center">
+          <!-- <i class="bi bi-book"></i> -->
+          <img class="svg" src="{% static 'library/svgs/student.svg' %}" alt="">
+          <p class="card-text fs-4">{{ noOfStudents }}
+          </p>
+          <a href="{% url 'library:viewStudents' %}" class="btn btn-dark">View Students </a>
+        </div>
+      </div>  
+
+
+
+    <!-- Issued Book Stat -->
+  <div class="card">
+    <div class="card-body text-center">
+      <!-- <i class="bi bi-book"></i> -->
+      <img class="svg" src="{% static 'library/svgs/issuedBook.svg' %}" alt="">
+      <p class="card-text fs-4">8</p>
+      <a href="#" class="btn btn-dark">Manage Issued Books </a>
+    </div>
+  </div> 
+</div>
+
+  
+
+
+
+      
+{% endblock content %}
+    

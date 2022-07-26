@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Library: Add  Student
+{% endblock title %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'library/css/addStudent.css' %}">
+{% endblock style %}
+{% block content %}
+{% include "library/navbarAdmin.html" %}
+<div class="container">
+<div class="fs-2 text-secondary mt-4">Add Student</div>
+    <form action="" method="post" autocomplete="off" class="row mt-1 bg-dark rounded-4 p-5">
+        {% csrf_token %}
+        {% if messages %}
+        <div class="col-12">
+            {% for message in messages %}
+                <span class="fs-5 text-danger">{{ message }}</span>          
+            {% endfor %} 
+        </div>    
+        {% endif %}
+            
+        <div class="col-md-6 mb-3">
+            <div class="form-floating">
+                
+                {{ userForm.email }}
+                <label for="{{ userForm.email.id_for_label }}">Email</label>
+                {{ userForm.email.errors}}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                {{ userForm.fullName }}
+                <label for="{{ userForm.fullName.id_for_label }}"> Enter Full Name</label>
+                {{ userForm.fullName.errors }}
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="form-floating">
+                {{ studentForm.fatherName }}
+                <label for="{{ studentForm.fatherName.id_for_label }}">Father Name</label>
+                {{ studentForm.fatherName.errors }}
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="form-floating">
+
+                {{ studentForm.contactNo }}
+                <label for="{{ studentForm.contactNo.id_for_label }}"> Contact No</label>
+                {{ studentForm.contactNo.errors }}
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="form-floating">
+                {{ studentForm.className }}
+                <label for="{{ studentForm.className.id_for_label }}"> Class Name</label>
+                {{ studentForm.className.errors }}
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="form-floating">
+                {{ studentForm.section }}
+                <label for="{{ studentForm.section.id_for_label }}"> Section</label>
+                {{ studentForm.section.errors }}
+            </div>
+        </div>
+        
+        <div class="col-md-3 offset-md-4 mt-3">
+            <input type="reset" value="Reset" class="form-control bg-danger text-white">
+        </div>
+        <div class="col-md-4 offset-md-1 mt-3">
+            <input type="submit" value="Add user" class="form-control bg-primary text-white">
+        </div>
+    </form>
+</div>
+
+    {% endblock content %}

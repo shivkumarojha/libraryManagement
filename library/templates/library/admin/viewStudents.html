@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+  Library: View Students
+{% endblock title %}
+
+{% block style %}
+  
+{% endblock style %}
+
+{% block content %}
+{% include "library/navbarAdmin.html" %}
+<div class="container">
+    
+    
+   
+    <div class="fs-2 text-success mt-4"><u>View Students</u></div>
+    <table class="table table-responsive table-bordered border-danger caption-top ">
+        <caption>No. of Students:- {{ noOfStudents }} ----- <a href="{% url 'library:addStudent' %}" class="btn btn-secondary">Add another Student</a> <br>
+            {% if messages %}
+            <div class="col-12">
+                {% for message in messages %}
+                    <span class="fs-5 text-danger">{{ message }}</span>          
+                {% endfor %} 
+            {% endif %}
+        </caption> 
+        
+        <thead class="table-dark">
+            <tr>
+                <th scopr="col">Name</th>
+                <th scopr="col">Father Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Contact</th>
+                <th scope="col">Class</th>
+                <th scope="col">Section</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+
+    
+            </tr>
+        </thead>
+        <tbody class="table-group-divider table-light">
+            
+            {% for student in students %}
+                
+            <tr>
+                <td>{{ student.user.fullName }}</td>
+                <td>{{ student.fatherName }}</td>
+                <td>{{ student.user.email }}</td>
+                <td>{{ student.contactNo }}</td>
+                <td>{{ student.className }}</td>
+                <td>{{ student.section }}</td>
+
+                <!-- For Update and delete -->
+                <td>
+                    <form action="{% url 'library:updateStudent' student.user.id %}" method="post">
+                        {% csrf_token %}
+                        
+                        <button type="submit" class="btn btn-secondary">
+                            <img src="{% static 'svgs/update.svg' %}" alt="">
+                        </button>
+                    </form> 
+                </td>   
+                <td>
+                    <form action="{% url 'library:deleteStudent' student.user.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#student{{student.user.id}}">
+                            <img src="{% static 'svgs/delete.svg' %}" alt="">
+                        </button>
+
+                        <!-- Modal -->
+<div class="modal fade" id="student{{student.user.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger" id="exampleModalLabel">Delete Student</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+            Are you sure to delete student-  <span class="text-danger fs-5">{{ student.user.fullName }}</span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+                            
+
+  
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+                
+        </tbody>
+        
+
+    </table>
+    <hr class="mt-4">
+
+</div>
+ 
+{% endblock content %}

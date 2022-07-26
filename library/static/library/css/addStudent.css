@@ -1,0 +1,13 @@
+form{
+    
+    color: white;
+    background-color: black;
+    /* height: 700px; */
+    
+}
+li {
+    list-style-type: none;
+    color: rgb(255, 0, 0);
+    font-weight: bold;
+    
+}
