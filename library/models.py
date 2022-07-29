@@ -12,12 +12,23 @@ class Book(models.Model):
     quantity = models.SmallIntegerField()
     stock = models.SmallIntegerField(null=True, blank=True)    
     def __str__(self):
-        return self.bookName
+        return f'{self.className} {self.bookName} by {self.authorName} '
 
 class Issue(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     user = models.ForeignKey((settings.AUTH_USER_MODEL), on_delete=models.CASCADE)
     issued_date = models.DateTimeField(auto_now_add=True)
-    expect_date_of_return = models.DateTimeField(auto_now_add=False, auto_now=False, null=True, blank=True)
+    expected_date_of_return = models.DateTimeField(auto_now_add=False, auto_now=False, null=True, blank=True)
+    returned = models.BooleanField(default=False)
+    date_of_return = models.DateTimeField(auto_now_add=False, auto_now=False, null=True, blank=True)
     fine = models.SmallIntegerField(null=True,blank=True)
     
+    def __str__(self):
+        return f'{self.book.className} {self.book.bookName} '
+        # return self.book.bookName
+    @property
+    def is_returned(self):
+        return self.returned
+    # @property
+    # def issued_date(self):
+    #     return self.issued_date

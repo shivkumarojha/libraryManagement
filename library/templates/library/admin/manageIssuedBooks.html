@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Library: Manage Issued Books
+{% endblock title %}
+
+
+{% block content %}
+    {% include "library/navbarAdmin.html" %}
+<div class="container">
+    <div class="fs-2 text-info mt-4"><u>Manage Issued Books</u></div>
+    <table class="table table-responsive table-bordered border-danger caption-top ">
+        <caption>No. of times Books Issued:- {{ countOfIssuedBooks }} ----- <a href="{% url 'library:issueBook' %}" class="btn btn-secondary">Issue another Book</a> <br>
+            {% if messages %}
+            <div class="col-12">
+                {% for message in messages %}
+                    <span class="fs-5 text-danger">{{ message }}</span>          
+                {% endfor %} 
+            {% endif %}
+        </caption> 
+        
+        <thead class="table-dark">
+            <tr>
+                <th scopr="col">Book </th>
+                <th scopr="col">Student</th>
+                <th scope="col">Issued Date</th>
+                <th scope="col">Expected Date</th>
+                <th scope="col">Returned</th>
+                <th scope="col">Date of Return</th>
+                <th scope="col">Fine</th>
+                <!-- <th scope="col">Update</th> -->
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider table-dark">
+            
+            {% for book in issuedBooks %}
+                
+            <tr>
+                <td>{{ book.book }}</td>
+                <td>{{ book.user }}</td>
+                <td>{{ book.issued_date }}</td>
+                <td>{{ book.expected_date_of_return }}</td>
+                <td>{{ book.returned }}</td>
+                <td>{{ book.date_of_return }}</td>
+                <td>{{ book.fine }}</td>
+
+                <!-- For Update and delete -->
+                <!-- <td>
+                    <form action="{% url 'library:updateBook' book.id %}">
+                        {% csrf_token %}
+                        
+                        <button type="submit" class="btn btn-secondary">
+                            <img src="{% static 'svgs/update.svg' %}" alt="">
+                        </button>
+                    </form> 
+                </td>    -->
+                <td>
+                    <form action="{% url 'library:deleteIssuedBook' book.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#book{{ book.id }}">
+                            <img src="{% static 'svgs/delete.svg' %}" alt="">
+                        </button>
+
+                        <!-- Modal -->
+<div class="modal fade" id="book{{ book.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger" id="exampleModalLabel">Delete Book</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+            Are you sure to delete book-  <span class="text-danger fs-5">{{ book }}</span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+                            
+
+  
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+                
+        </tbody>
+        
+
+    </table>
+    <hr class="mt-4">
+
+</div>
+{% endblock content %}
+    
+    

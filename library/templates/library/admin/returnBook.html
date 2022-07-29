@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+  Library: Return Book
+{% endblock title %}
+
+{% block style %}
+  
+{% endblock style %}
+
+{% block content %}
+{% include "library/navbarAdmin.html" %}
+
+
+<div class="container">
+    <div class="fs-2 text-info mt-5">Return Book</div>
+    <form action="" method="post" autocomplete="off" class="row  bg-dark rounded-5 p-5">
+        {% csrf_token %}
+        {% if messages %}
+             {% for message in messages %}
+             <span class="text-danger text-center">{{ message }}</span>
+            {% endfor %}
+        {% endif %}
+
+
+        <div class="row justify-content-center">
+            {{ form.user.errors }}
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="form-floating">
+                    
+                    {{ form.user }}
+                    <label for="{{ form.user.id_for_label }}">Select Student</label>
+                </div>
+            </div>
+            {{ form.book.errors }}
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="form-floating">
+                    {{ form.book }}
+                    <label for="{{ form.book.id_for_label }}">Select Book for return</label>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-end">
+            <div class="col-md-auto col-sm-6">
+                <input type="submit" value="Return Book" class="btn btn-primary mt-4">
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    let userId = document.getElementById('id_user')
+    let bookId = document.getElementById('id_book').innerHTML = ''
+    async function filterBooks(e){
+        let userId = e.target.value
+        let response = await fetch("{% url 'library:filterBooks' %}", {
+            method: 'get',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'ContentType': 'application/json',
+                'userId': userId
+            }
+        })
+
+        let data = await response.text()
+        console.log(await data)
+        bookId = document.getElementById('id_book').innerHTML = data
+    }
+</script>
+
+{% endblock content %}

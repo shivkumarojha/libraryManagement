@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+  Library: Issue Book
+{% endblock title %}
+
+{% block style %}
+  
+{% endblock style %}
+
+{% block content %}
+{% include "library/navbarAdmin.html" %}
+
+
+<div class="container">
+    <div class="fs-2 text-secondary mt-5">Issue Book</div>
+    <form action="" method="post" autocomplete="off" class="row  bg-dark rounded-5 p-5">
+        {% csrf_token %}
+        {% if messages %}
+             {% for message in messages %}
+                <span class="text-danger text-center">{{ message }}</span>
+            {% endfor %}
+        {% endif %}
+
+        {% for error in form.book.errors  %}
+          {{ errors }}
+        {% endfor %}
+
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="form-floating">
+                    {{ form.book }}
+                    <label for="{{ form.book.id_for_label }}">Select Book</label>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="form-floating">
+                    {{ form.user }}
+                    <label for="{{ form.user.id_for_label }}">Select Student</label>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-end">
+            <div class="col-md-auto col-sm-6">
+                <input type="submit" value="Issue Book" class="btn btn-primary mt-4">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock content %}

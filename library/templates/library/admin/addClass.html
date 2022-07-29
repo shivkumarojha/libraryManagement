@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+  Library: Add Class
+{% endblock title %}
+
+{% block style %}
+  
+{% endblock style %}
+
+{% block content %}
+{% include "library/navbarAdmin.html" %}
+
+
+<div class="container">
+    <div class="fs-2 text-success mt-5">Add Class</div>
+    <form action="" method="post" autocomplete="off" class="row bg-dark rounded-5 p-5">
+        {% csrf_token %}
+        {% if messages %}
+             {% for message in messages %}
+                <span class="text-danger text-center">{{ message }}</span>
+            {% endfor %}
+        {% endif %}
+
+        {% for error in form.className.errors  %}
+          {{ errors }}
+        {% endfor %}
+
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-sm-12 mt-3">
+                <div class="form-floating">
+                    {{ form.className }}
+                    <label for="{{ form.className.id_for_label }}"> Enter Class Name</label>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-end">
+
+            <div class="col-md-5">
+                <input type="submit" value="Add Class" class="btn btn-primary mt-4">
+            </div>
+        </div>
+    </form>
+</div>
+
+
+{% endblock content %}

@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Library: View classes
+{% endblock title %}
+
+{% block style %}
+  
+{% endblock style %}
+
+{% block content %}
+{% include "library/navbarAdmin.html" %}
+<div class="container">
+    <div class="row">
+        {% if messages %}
+             {% for message in messages %}
+                <span class="text-danger text-center mt-5">{{ message }}</span>
+            {% endfor %}
+        {% endif %}
+
+          {% for class in className %}
+        <div class="col-lg-4 col-md-3">
+
+            <div class="card mt-5">
+                <div class="card-header bg-dark fw-bold text-center text-white">
+                  Class {{ class }}
+                  <hr>
+                  <!-- For update and delete class -->
+                  <div class="row justify-content-center">
+                    <div class="col">
+
+                        <form action="{% url 'library:updateClassName' class.id %}">
+                          {% csrf_token %}
+                          
+                          <button type="submit" class="btn btn-secondary">
+                              <img src="{% static 'svgs/update.svg' %}" alt="">
+                          </button>
+                      </form> 
+                    </div>
+
+                    <div class="col">
+                        <!-- For delete -->
+                        <form action="{% url 'library:deleteClassName' class.id %}" method="post">
+                            {% csrf_token %}
+                                  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#className{{ class.id }}">
+                                      <img src="{% static 'svgs/delete.svg' %}" alt="">
+                                  </button>
+              
+                                  <!-- Modal -->
+              <div class="modal fade" id="className{{ class.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="exampleModalLabel">Delete Class</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body text-dark">
+                    
+                      Are you sure to delete Class-  <span class="text-danger fs-5">{{ class }}</span>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                  </div>
+                </div>
+              </div>
+              </div>
+              </form>
+
+                    </div>
+                    
+
+                  </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    
+                    {% for section in sections  %}
+                        {% if section.className.id == class.id %}
+                        <li class="list-group-item">{{ section }}
+                            
+                            <!-- For update Section -->
+                           <div class="d-inline-flex align-self-end">
+                               <div class="p-2">
+                                <form action="{% url 'library:updateSection' section.id %}">
+                                  {% csrf_token %}
+                                  
+                                  <button type="submit" class="btn btn-outline-secondary">
+                                      <img src="{% static 'svgs/update.svg' %}" alt="">
+                                  </button>
+                                 </form> 
+                                
+                            </div>
+                            <div class="p-2">
+
+                                <!-- For View book -->
+                                <form action="{% url 'library:deleteSection' section.id %}" method="post">
+                                    {% csrf_token %}
+                                          <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#section{{ section.id }}">
+                                              <img src="{% static 'svgs/delete.svg' %}" alt="">
+                                          </button>
+                      
+                                          <!-- Modal -->
+                      <div class="modal fade" id="section{{ section.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title text-danger" id="exampleModalLabel">Delete Section</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body text-dark">
+                            
+                              Are you sure to delete Section-  <span class="text-danger fs-5">{{ section }}</span>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                                 </form>
+                            </div>
+                            <div class="p-2">
+                                <form action="" method="post">
+                                  {% csrf_token %}
+                                  
+                                  <button type="submit" class="btn btn-outline-dark">
+                                      <img src="{% static 'svgs/library.svg' %}" alt="">
+                                  </button>
+                                 </form> 
+                                
+                            </div>
+                           </div>
+
+                        </li>
+                        {% endif %}
+                        
+                    {% endfor %}
+                    
+                        
+                </ul>
+              </div>
+        </div>
+        {% endfor %}
+      </div>
+      
+</div>
+{% endblock content %}

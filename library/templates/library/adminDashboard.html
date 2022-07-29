@@ -21,8 +21,8 @@
       <div class="card-body text-center">
         <!-- <i class="bi bi-book"></i> -->
         <img class="svg" src="{% static 'library/svgs/book.svg' %}" alt="">
-        <p class="card-text fs-4">8</p>
-        <a href="#" class="btn btn-dark">View Books </a>
+        <p class="card-text fs-4">{{ noOfBooks }}</p>
+        <a href="{% url 'library:viewBooks' %}" class="btn btn-dark">View Books </a>
       </div>
     </div>  
 
@@ -46,7 +46,7 @@
     <div class="card-body text-center">
       <!-- <i class="bi bi-book"></i> -->
       <img class="svg" src="{% static 'library/svgs/issuedBook.svg' %}" alt="">
-      <p class="card-text fs-4">8</p>
+      <p class="card-text fs-4">{{ noOfIssuedBooks }}</p>
       <a href="#" class="btn btn-dark">Manage Issued Books </a>
     </div>
   </div> 

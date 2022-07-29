@@ -6,5 +6,6 @@ class BookAdmin(admin.ModelAdmin):
 admin.site.register(Book, BookAdmin)
 
 class IssueAdmin(admin.ModelAdmin):
-    list_display = ('book', 'user', 'issued_date', 'expect_date_of_return','fine')
+    list_display = ('book', 'user', 'issued_date', 'expected_date_of_return','returned','date_of_return', 'fine')
+    # list_editable = ('returned',  )
 admin.site.register(Issue, IssueAdmin)

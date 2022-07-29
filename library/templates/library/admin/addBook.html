@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Library: Add  Book
+{% endblock title %}
+{% block style %}
+    <!-- Add Your stylesheets here -->
+{% endblock style %}
+
+{% block content %}
+{% include "library/navbarAdmin.html" %}
+<div class="container">
+<div class="fs-2 text-secondary mt-4">Add Book</div>
+    <form action="" method="post" autocomplete="off" class="row mt-1 bg-dark rounded-4 p-5">
+        {% csrf_token %}
+        {% if messages %}
+        <div class="col-12">
+            {% for message in messages %}
+                <span class="fs-5 text-danger">{{ message }}</span>          
+            {% endfor %} 
+        </div>    
+        {% endif %}
+            
+        <div class="col-md-6 mb-3">
+            <div class="form-floating">
+                
+                {{ form.bookName }}
+                <label for="{{ form.bookName.id_for_label }}">Book Name</label>
+                {{ form.bookName.errors}}
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="form-floating">
+                {{ form.authorName }}
+                <label for="{{ form.authorName.id_for_label }}"> Enter Author Name</label>
+                {{ form.authorName.errors }}
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="form-floating">
+                {{ form.isbn }}
+                <label for="{{ form.isbn.id_for_label }}">ISBN</label>
+                {{ form.isbn.errors }}
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+        <div class="form-floating">
+
+            {{ form.className }}
+            <label for="{{ form.className.id_for_label }}"> Enter Class Name </label>
+            {{ form.className.errors }}
+        </div>
+        </div>
+    
+        <div class="col-md-3 mb-3">
+        <div class="form-floating">
+            {{ form.quantity }}
+            <label for="{{ form.quantity.id_for_label }}"> Quantity</label>
+            {{ form.quantity.errors }}
+        </div>
+        </div>
+
+        
+        <div class="col-md-3 offset-md-4 mt-3">
+            <input type="reset" value="Reset" class="form-control bg-danger text-white">
+        </div>
+        <div class="col-md-4 offset-md-1 mt-3">
+            <input type="submit" value="Add Book" class="form-control bg-primary text-white">
+        </div>
+    </form>
+</div>
+
+    {% endblock content %}

@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block extraLinks %}
+
+{% endblock extraLinks %}
+    
 {% block title %}
   Library: Add  Student
 {% endblock title %}
@@ -77,5 +82,26 @@
         </div>
     </form>
 </div>
+<!-- <script src="{% static 'js/fetchSection.js' %}"></script> -->
+<script>
+    let sectionId = document.getElementById('id_section').innerHTML = '-----'
+    async function fetchSection(e){
+        let id = e.target.value
+        let response = await fetch("{% url 'library:fetchSection' %}", {
+            method: 'get',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'ContentType': 'application/json',
+                'classId': id
+            }
+        })
 
-    {% endblock content %}
+        //let data = await response.json()
+        let data = await response.text()
+        console.log(await data)
+        sectionId = document.getElementById('id_section').innerHTML = data
+    }
+</script>
+
+
+{% endblock content %}
