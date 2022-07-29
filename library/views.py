@@ -376,7 +376,7 @@ def returnBook(request):
                         issuedBook.fine = 15 * extra
                     issuedBook.save()
                     # increase the stock after collecting book from student
-                    bookStock.stock = bookStock + 1
+                    bookStock.stock = bookStock.stock + 1
                     bookStock.save()
                     messages.success(request, 'Book returned successfully')
                     return redirect(request.META.get('HTTP_REFERER'))
@@ -418,6 +418,13 @@ def manageIssuedBooks(request):
 def deleteIssuedBook(request, pk):
     issuedBook = Issue.objects.get(id=pk)
     if request.method == 'POST':
+        if issuedBook.returned ==  False:
+            # changing the stock
+            print(issuedBook.id)
+            
+            bookStock = Book.objects.get(id=issuedBook.book_id)
+            bookStock.stock = bookStock.stock + 1
+            bookStock.save()
         issuedBook.delete()
         messages.success(request, 'Book deleted successfully')
         return redirect(request.META.get('HTTP_REFERER'))
