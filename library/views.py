@@ -401,7 +401,7 @@ def returnBook(request):
                     if extra > 0:
                         fine = extra * 15
                         issuedBook.fine = 15 * extra
-                        issuedBook.save()
+                    issuedBook.save()
                     # increase the stock after collecting book from student
                     bookStock.stock = bookStock.stock + 1
                     bookStock.save()
