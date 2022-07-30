@@ -67,6 +67,15 @@ def addStudent(request):
 def viewStudents(request):
     students = StudentProfile.objects.all()
     noOfStudents = StudentProfile.objects.count()
+    if request.method == 'POST':
+        searchText = request.POST.get('searchInput')
+        filterStudentsByEmail = StudentProfile.objects.filter(user__email__icontains=searchText)
+        filterStudentsByName = StudentProfile.objects.filter(user__fullName__icontains=searchText)
+        filteredStudents = filterStudentsByName | filterStudentsByEmail
+        context = {
+            'students': filteredStudents
+        }        
+        return render(request, 'library/admin/viewStudents.html', context )
     context = {
         'students': students,
         'noOfStudents': noOfStudents
@@ -151,11 +160,24 @@ def addSection(request):
 
 @admin_user_required
 def viewClasses(request):
+    # Search Method implemetings
+    if request.method == 'POST':
+        searchText = request.POST.get('searchInput')
+        className = ClassName.objects.filter(className__icontains=searchText)
+        sections = Section.objects.all()
+
+        context = {
+            'className': className,
+            'sections': sections
+        }        
+        return render(request, 'library/admin/viewClasses.html', context )
+
+
     className = ClassName.objects.all().order_by('className')
     sections = Section.objects.all()
     context = {
         'className': className,
-        'sections': sections,
+        'sections': sections
     }
     return render(request, 'library/admin/viewClasses.html', context)
 
@@ -239,6 +261,13 @@ def addBook(request):
 
 @admin_user_required
 def viewBooks(request):
+    if request.method == 'POST':
+        searchText = request.POST.get('searchInput')
+        books = Book.objects.filter(bookName__icontains=searchText)
+        context = {
+            'books': books
+        }        
+        return render(request, 'library/admin/viewBooks.html', context )
     books = Book.objects.all()
     countOfBooks = Book.objects.count()
     context = {
@@ -311,7 +340,6 @@ def issueBook(request):
                     book = form.save()
                     # getting book from database
                     issuedBook = Issue.objects.get(id=book.id)
-                    print(issuedBook.book_id)
                     book = Book.objects.get(id=issuedBook.book_id)
                     # Fetching issued date 
                     issued_date = issuedBook.issued_date
@@ -337,9 +365,7 @@ def issueBook(request):
 @admin_user_required
 def fetchSection(request):
     classId = request.headers.get('classId')
-    print(classId)
     section = Section.objects.filter(className_id=classId)
-    print(section)
     return render(request, 'library/fetchSection.html', {'section': section})
     # print(section)
     # sectionData = serializers.serialize('json', section, fields=('section'))
@@ -358,7 +384,7 @@ def returnBook(request):
         if form.is_valid(): 
             user = form.cleaned_data['user']
             book = form.cleaned_data['book']
-
+            fine = 0
             issuedBook = Issue.objects.get(book_id=book.id, user=user.id)
             bookStock = Book.objects.get(id=book.id)
 
@@ -373,12 +399,13 @@ def returnBook(request):
                     
                     # Calculating fine
                     if extra > 0:
+                        fine = extra * 15
                         issuedBook.fine = 15 * extra
-                    issuedBook.save()
+                        issuedBook.save()
                     # increase the stock after collecting book from student
                     bookStock.stock = bookStock.stock + 1
                     bookStock.save()
-                    messages.success(request, 'Book returned successfully')
+                    messages.success(request, 'Book returned successfully and fine is ' + str(fine) )
                     return redirect(request.META.get('HTTP_REFERER'))
                 else:
                     messages.info(request, 'Book has been returned previously')
@@ -405,6 +432,19 @@ def filterBooks(request):
 # manage issued books
 @admin_user_required
 def manageIssuedBooks(request):
+    
+    # Search Impletation
+    if request.method == 'POST':
+        searchText = request.POST.get('searchInput')
+        filterByIssuedBooks = Issue.objects.filter(book__bookName__icontains=searchText)
+        filterByIssuedBookUserEmail = Issue.objects.filter(user__email__icontains=searchText)
+        filterByIssuedBookReturned = Issue.objects.filter(returned__icontains=searchText)
+        issuedBooks = filterByIssuedBooks|filterByIssuedBookUserEmail|filterByIssuedBookReturned
+        context = {
+            'issuedBooks': issuedBooks,
+        }        
+        return render(request, 'library/admin/manageIssuedBooks.html', context )
+
     issuedBooks = Issue.objects.all()
     countOfIssuedBooks = Issue.objects.count()
     context = {
@@ -420,8 +460,6 @@ def deleteIssuedBook(request, pk):
     if request.method == 'POST':
         if issuedBook.returned ==  False:
             # changing the stock
-            print(issuedBook.id)
-            
             bookStock = Book.objects.get(id=issuedBook.book_id)
             bookStock.stock = bookStock.stock + 1
             bookStock.save()
@@ -429,3 +467,32 @@ def deleteIssuedBook(request, pk):
         messages.success(request, 'Book deleted successfully')
         return redirect(request.META.get('HTTP_REFERER'))
     
+# @admin_user_required
+# def search(request):
+#     if request.method == "GET":
+#         searchText = request.GET.get('searchInput')
+#         print(searchText)
+#         print(request.META.get('HTTP_REFERER'))
+#         return redirect(request.META.get('HTTP_REFERER'))
+        
+        
+@admin_user_required
+def viewBookByClassName(request, pk):
+    
+    books = Book.objects.filter(className=pk)
+    countOfBooks = books.count()
+    
+    # Search Method
+    if request.method == 'POST':
+        searchText = request.POST.get('searchInput')
+        books = books.filter(bookName__icontains=searchText)
+        context = {
+            'books': books
+        }        
+        return render(request, 'library/admin/viewBooks.html', context )
+    
+    context = {
+        'books': books,
+        'countOfBooks': countOfBooks
+    }
+    return render(request, 'library/admin/viewBooks.html', context)

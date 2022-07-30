@@ -24,7 +24,7 @@ class Issue(models.Model):
     fine = models.SmallIntegerField(null=True,blank=True)
     
     def __str__(self):
-        return f'{self.book.className} {self.book.bookName} '
+        return f'{self.book.className} {self.book.bookName} by {self.book.authorName}'
         # return self.book.bookName
     @property
     def is_returned(self):

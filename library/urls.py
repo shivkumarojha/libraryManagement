@@ -24,6 +24,7 @@ urlpatterns = [
     path("deleteClassName/<int:pk>", views.deleteClassName, name="deleteClassName"),
     path('updateSection/<int:pk>/', views.updateSection, name='updateSection'),
     path('deleteSection/<int:pk>/', views.deleteSection, name='deleteSection'),
+    path("viewBookByClassName/<int:pk>/", views.viewBookByClassName, name="viewBookByClassName"),
     
     # Book related URls
     path('addBook/', views.addBook, name='addBook'),
@@ -36,6 +37,7 @@ urlpatterns = [
     path("returnBook/", views.returnBook , name="returnBook"),
     path("manageIssuedBooks/", views.manageIssuedBooks , name="manageIssuedBooks"),
     path("deleteIssuedBook/<int:pk>/", views.deleteIssuedBook , name="deleteIssuedBook"),
+    
     
     # fetch request
     path('fetchSection/', views.fetchSection, name='fetchSection'),

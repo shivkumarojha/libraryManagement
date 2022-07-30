@@ -74,11 +74,14 @@
             </li>
         </ul>
         
-        <!-- Search bar -->
-            <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search in Library" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+          <form class="d-flex" id="searchForm"  method="post">
+            {% csrf_token %}
+            <input class="form-control me-2" type="text" name="searchInput" placeholder="Search in Library" aria-label="Search" id="searchInput" hidden>
+            <button class="btn btn-outline-success" type="submit" id="searchBtn" hidden>Search</button>
             </form> &nbsp;
+        
+          
+            
 
             <!-- Admin related dropdown -->
             {% if request.user.is_authenticated %}

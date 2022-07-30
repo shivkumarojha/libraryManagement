@@ -19,6 +19,7 @@
         {% endif %}
 
           {% for class in className %}
+        
         <div class="col-lg-4 col-md-3">
 
             <div class="card mt-5">
@@ -121,7 +122,7 @@
                                  </form>
                             </div>
                             <div class="p-2">
-                                <form action="" method="post">
+                                <form action="{% url 'library:viewBookByClassName' class.id %}" method="get">
                                   {% csrf_token %}
                                   
                                   <button type="submit" class="btn btn-outline-dark">
@@ -141,8 +142,23 @@
                 </ul>
               </div>
         </div>
+
+         {% empty %}
+         <h3 class="text-center mt-5 text-danger">Search class doesn't exist</h3>
         {% endfor %}
       </div>
       
 </div>
+
+<script>
+  url = "{{ request.get_full_path }}"
+  path = 'library/viewClasses/'
+  console.log(url)
+  if (url = path) {
+      console.log("matched");
+      document.getElementById('searchInput').hidden=false
+      document.getElementById('searchInput').placeholder="Search Classes"
+      document.getElementById('searchBtn').hidden=false
+  }
+</script>
 {% endblock content %}
