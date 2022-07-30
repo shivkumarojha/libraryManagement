@@ -429,7 +429,7 @@ def filterBooks(request):
     return render(request, 'library/admin/filterBooks.html', context)
 
 
-# manage issued books
+# # manage issued books
 @admin_user_required
 def manageIssuedBooks(request):
     
@@ -439,6 +439,7 @@ def manageIssuedBooks(request):
         filterByIssuedBooks = Issue.objects.filter(book__bookName__icontains=searchText)
         filterByIssuedBookUserEmail = Issue.objects.filter(user__email__icontains=searchText)
         filterByIssuedBookReturned = Issue.objects.filter(returned__icontains=searchText)
+        print(filterByIssuedBookReturned)
         issuedBooks = filterByIssuedBooks|filterByIssuedBookUserEmail|filterByIssuedBookReturned
         context = {
             'issuedBooks': issuedBooks,
@@ -452,6 +453,8 @@ def manageIssuedBooks(request):
         'countOfIssuedBooks': countOfIssuedBooks
     }
     return render(request, 'library/admin/manageIssuedBooks.html', context)
+
+
 
 # Delete Issued Book
 @admin_user_required
