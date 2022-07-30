@@ -77,14 +77,20 @@ WSGI_APPLICATION = 'libraryManagement.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'library',
-        'USER': 'shiv',
-        'PASSWORD': 'shiv',
-        'PORT': '5432',
-        'HOST': 'localhost'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
     }
-}
+    }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'library',
+#         'USER': 'shiv',
+#         'PASSWORD': 'shiv',
+#         'PORT': '5432',
+#         'HOST': 'localhost'
+#     }
+# }
 
 # For Custom User Model
 AUTH_USER_MODEL  = 'registration.User'
