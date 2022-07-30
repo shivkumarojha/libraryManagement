@@ -3,3 +3,4 @@ backports.zoneinfo==0.2.1
 Django==4.0.6
 sqlparse==0.4.2
 whitenoise==6.2.0
+gunicorn==19.7.1
