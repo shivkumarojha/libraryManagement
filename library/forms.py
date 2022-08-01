@@ -1,7 +1,7 @@
 from django import forms
 from registration.models import User, StudentProfile, ClassName, Section
 from .models import Book, Issue
-
+from django.contrib.auth.forms import UserCreationForm
 
 class UserForm(forms.ModelForm):
     class Meta:
@@ -156,10 +156,31 @@ class IssueForm(forms.ModelForm):
             }
         )
 
-        self.fields['user'] .widget.attrs.update(
+        self.fields['user'].widget.attrs.update(
             {
                 'class': 'form-control bg-dark text-white',
                 'placeholder': 'Select User',
                 'onchange': 'filterBooks(event)'
+            }
+        )
+
+
+class ChangePasswordForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['password1', 'password2']
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].widget.attrs.update(
+            {
+                'class': 'form-control bg-dark text-white',
+                'placeholder': 'Enter Password',
+            }
+        )
+        self.fields['password2'].widget.attrs.update(
+            {
+                'class': 'form-control bg-dark text-white',
+                'placeholder': 'Confirm Password',
             }
         )

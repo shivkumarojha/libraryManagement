@@ -33,7 +33,7 @@
                 {{ userForm.email.errors}}
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 mb-3">
             <div class="form-floating">
                 {{ userForm.fullName }}
                 <label for="{{ userForm.fullName.id_for_label }}"> Enter Full Name</label>
@@ -82,7 +82,6 @@
         </div>
     </form>
 </div>
-<!-- <script src="{% static 'js/fetchSection.js' %}"></script> -->
 <script>
     let sectionId = document.getElementById('id_section').innerHTML = '-----'
     async function fetchSection(e){

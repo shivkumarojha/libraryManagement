@@ -42,4 +42,7 @@ urlpatterns = [
     # fetch request
     path('fetchSection/', views.fetchSection, name='fetchSection'),
     path('filterBooks/', views.filterBooks, name='filterBooks'),
+    
+    # Change password
+    path("changeAdminPassword/<int:pk>/", views.changeAdminPassword, name="changeAdminPassword"),
 ]

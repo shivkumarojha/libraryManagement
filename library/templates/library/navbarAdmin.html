@@ -45,10 +45,6 @@
             </ul>
           </li>
 
-
-
-
-
           <!-- Dropdown for Books -->
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -79,9 +75,6 @@
             <input class="form-control me-2" type="text" name="searchInput" placeholder="Search in Library" aria-label="Search" id="searchInput" hidden>
             <button class="btn btn-outline-success" type="submit" id="searchBtn" hidden>Search</button>
             </form> &nbsp;
-        
-          
-            
 
             <!-- Admin related dropdown -->
             {% if request.user.is_authenticated %}
@@ -90,7 +83,7 @@
                     <span style="color: white;">{{ user.fullName }} 
                 </button>
                 <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end dropdown-menu-sm-start" aria-labelledby="dropdownMenuButton1">
-                  <li><a class="dropdown-item" href="#">Change Password</a></li>
+                  <li><a class="dropdown-item" href="{% url 'library:changeAdminPassword' request.user.id %}">Change Password</a></li>
                   <li><a class="dropdown-item" href="{% url 'logout' %}">Log Out</a></li>
                 </ul>
               </div>

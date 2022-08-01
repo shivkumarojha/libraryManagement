@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse, render
 from django.views.decorators.csrf import csrf_protect
 from .decorators import admin_user_required, staff_user_required, student_user_required
 from django.contrib import messages
-from .forms import UserForm, StudentProfileForm, ClassNameForm, SectionForm, AddBookForm, IssueForm
+from .forms import UserForm, StudentProfileForm, ClassNameForm, SectionForm, AddBookForm, IssueForm, ChangePasswordForm
 from django.shortcuts import redirect
 from registration.models import User, StudentProfile, ClassName, Section
 from django.urls import reverse
@@ -11,6 +11,7 @@ from .models import Book, Issue
 from datetime import timedelta, datetime
 from django.http import JsonResponse
 from django.core import serializers
+
 @csrf_protect   
 @admin_user_required
 def adminDashboard(request):
@@ -63,6 +64,7 @@ def addStudent(request):
     return render(request, 'library/admin/addStudent.html', context)
 
 
+# View Student
 @admin_user_required
 def viewStudents(request):
     students = StudentProfile.objects.all()
@@ -104,7 +106,6 @@ def updateStudent(request, pk):
         'studentForm': studentForm
     }
     return render(request, 'library/admin/updateStudent.html', context)
-    # return redirect(request.META.get('HTTP_REFERER'))
 
 # delete Student
 @admin_user_required
@@ -119,7 +120,6 @@ def deleteStudent(request, pk):
 # Class section Start
 
 # Add Class
-
 @admin_user_required
 def addClass(request):
     if request.method == 'POST':
@@ -137,8 +137,8 @@ def addClass(request):
     }
     return render(request, 'library/admin/addClass.html', context)
 
-# Add Section
 
+# Add Section
 @admin_user_required
 def addSection(request):
     if request.method == 'POST':
@@ -158,9 +158,10 @@ def addSection(request):
     return render(request, 'library/admin/addSection.html', context)
 
 
+# View Classes
 @admin_user_required
 def viewClasses(request):
-    # Search Method implemetings
+    # Search Method implemented
     if request.method == 'POST':
         searchText = request.POST.get('searchInput')
         className = ClassName.objects.filter(className__icontains=searchText)
@@ -183,7 +184,6 @@ def viewClasses(request):
 
 
 # Edit Class Name
-
 @admin_user_required
 def updateClassName(request, pk):
     className = ClassName.objects.get(id=pk)
@@ -240,7 +240,7 @@ def deleteSection(request, pk):
         return redirect(reverse('library:viewClasses'))
 
 
-
+# Add Book
 @admin_user_required
 def addBook(request):
     form = AddBookForm
@@ -259,6 +259,7 @@ def addBook(request):
     }
     return render(request, 'library/admin/addBook.html', context)
 
+# View Books
 @admin_user_required
 def viewBooks(request):
     if request.method == 'POST':
@@ -286,8 +287,16 @@ def updateBook(request, pk):
     if request.method == 'POST':
         form = AddBookForm(request.POST, instance=book)
         if form.is_valid():
+            # accessing previous data of form to access stock value
+            prev_data = Book.objects.get(pk=form.instance.pk)
             bookName = form.cleaned_data['bookName']
-            form.save()
+            quantity = form.cleaned_data['quantity']
+            book = form.save(commit=False)
+            # Check the difference in quantity while updating
+            difference = book.quantity - prev_data.quantity
+            # Calculate updated stock
+            book.stock = prev_data.stock + difference
+            book.save()
             messages.success(request, 'Book ' + bookName + ' updated successfully' )
             return redirect(reverse('library:viewBooks'))
     context = {
@@ -307,7 +316,6 @@ def deleteBook(request, pk):
     
     
 # Issue Book related views
-
 # issue book
 @admin_user_required
 def issueBook(request):
@@ -367,15 +375,8 @@ def fetchSection(request):
     classId = request.headers.get('classId')
     section = Section.objects.filter(className_id=classId)
     return render(request, 'library/fetchSection.html', {'section': section})
-    # print(section)
-    # sectionData = serializers.serialize('json', section, fields=('section'))
-    # print(sectionData)
-    # data = {
-    #     'section': sectionData
-    # }
-    # return JsonResponse(data)   
     
-    
+# Return Book 
 @admin_user_required
 def returnBook(request):
     form = IssueForm
@@ -429,7 +430,7 @@ def filterBooks(request):
     return render(request, 'library/admin/filterBooks.html', context)
 
 
-# # manage issued books
+# manage issued books
 @admin_user_required
 def manageIssuedBooks(request):
     
@@ -469,16 +470,8 @@ def deleteIssuedBook(request, pk):
         issuedBook.delete()
         messages.success(request, 'Book deleted successfully')
         return redirect(request.META.get('HTTP_REFERER'))
-    
-# @admin_user_required
-# def search(request):
-#     if request.method == "GET":
-#         searchText = request.GET.get('searchInput')
-#         print(searchText)
-#         print(request.META.get('HTTP_REFERER'))
-#         return redirect(request.META.get('HTTP_REFERER'))
-        
-        
+
+# View Book by class Name 
 @admin_user_required
 def viewBookByClassName(request, pk):
     
@@ -499,3 +492,20 @@ def viewBookByClassName(request, pk):
         'countOfBooks': countOfBooks
     }
     return render(request, 'library/admin/viewBooks.html', context)
+
+# change Admin Password
+@admin_user_required
+def changeAdminPassword(request, pk):
+    user = User.objects.get(id=pk)
+    form = ChangePasswordForm(instance=user)
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Password Changed!")
+            return redirect(request.META.get('HTTP_REFERER'))
+    
+    context = {
+        'form': form
+    }
+    return render(request, 'library/admin/changeAdminPassword.html', context)
