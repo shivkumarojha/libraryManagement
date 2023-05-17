@@ -52,3 +52,19 @@
     color: #03e9f4;
     font-size: 12px;
   }
+  
+  .login-box .user-box .email-input:focus ~ label,
+.login-box .user-box .email-input:valid ~ label {
+  top: -20px;
+  left: 0;
+  color: #03e9f4;
+  font-size: 12px;
+}
+
+.login-box .user-box .password-input:focus ~ label,
+.login-box .user-box .password-input:valid ~ label {
+  top: -20px;
+  left: 0;
+  color: #03e9f4;
+  font-size: 12px;
+}
