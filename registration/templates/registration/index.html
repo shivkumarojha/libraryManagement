@@ -18,7 +18,7 @@
       <form action="" method="post" autocomplete="off">
         {% csrf_token %}
         <div class="user-box">
-          {{form.email}}
+          {{ form.email }}
           <label for="{{form.email.id_for_label}}">Email</label>
         </div>
         <div class="user-box">
