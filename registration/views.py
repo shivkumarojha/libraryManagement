@@ -4,7 +4,9 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm
 from .models import User
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_protect
 
+@csrf_protect
 def index(request):
     if request.user.is_authenticated:
         if request.user.is_admin:
