@@ -152,6 +152,6 @@ LOGIN_URL = '/'
 
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://web-production-3463.up.railway.app/'
+    'https://web-production-3463.up.railway.app'
 ]
 
