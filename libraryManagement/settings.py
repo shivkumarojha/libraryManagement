@@ -149,3 +149,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/'
+
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://web-production-3463.up.railway.app/'
+]
+
